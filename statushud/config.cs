@@ -1,118 +1,194 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Vintagestory.API.Client;
 using Vintagestory.API.MathTools;
 
-namespace StatusHud {
-	public class StatusHudConfig {
-		public int iconSize = 32;
-		public bool showHidden = false;
-		public StatusHudTextConfig text = new StatusHudTextConfig(new StatusHudColour(0.91f, 0.87f, 0.81f, 1), 16, true, 0, -19, EnumTextOrientation.Center);
-		public string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-		public bool compassAbsolute = false;
-		public IDictionary<int, StatusHudConfigElement> elements = new Dictionary<int, StatusHudConfigElement>();
-		public bool installed = false;
-	}
+namespace StatusHud
+{
+    public class StatusHudConfig
+    {
+        public int iconSize = 32;
+        public bool showHidden = false;
+        public StatusHudTextConfig text = new StatusHudTextConfig(new StatusHudColour(0.91f, 0.87f, 0.81f, 1), 16, true, 0, -19, EnumTextOrientation.Center);
+        public string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        public StatusHudOptions options = new StatusHudOptions('C', "12hr");
+        public bool compassAbsolute = false;
+        public IDictionary<int, StatusHudConfigElement> elements = new Dictionary<int, StatusHudConfigElement>();
+        public bool installed = false;
+    }
 
-	public class StatusHudTextConfig {
-		public StatusHudColour colour;
-		public float size;
-		public bool bold;
-		public float offsetX;
-		public float offsetY;
-		public EnumTextOrientation align;
+    public class StatusHudTextConfig
+    {
+        public StatusHudColour colour;
+        public float size;
+        public bool bold;
+        public float offsetX;
+        public float offsetY;
+        public EnumTextOrientation align;
 
-		public StatusHudTextConfig(StatusHudColour colour, float size, bool bold, float offsetX, float offsetY, EnumTextOrientation align) {
-			this.colour = colour;
-			this.size = size;
-			this.bold = bold;
-			this.offsetX = offsetX;
-			this.offsetY = offsetY;
-			this.align = align;
-		}
-	}
+        public StatusHudTextConfig(StatusHudColour colour, float size, bool bold, float offsetX, float offsetY, EnumTextOrientation align)
+        {
+            this.colour = colour;
+            this.size = size;
+            this.bold = bold;
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+            this.align = align;
+        }
+    }
 
-	public class StatusHudColour {
-		public float r;
-		public float g;
-		public float b;
-		public float a;
+    public class StatusHudColour
+    {
+        public float r;
+        public float g;
+        public float b;
+        public float a;
 
-		public StatusHudColour(float r, float g, float b, float a) {
-			this.r = r;
-			this.g = g;
-			this.b = b;
-			this.a = a;
-		}
+        public StatusHudColour(float r, float g, float b, float a)
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = a;
+        }
 
-		public Vec4f ToVec4f() {
-			return new Vec4f(this.r, this.g, this.b, this.a);
-		}
-	}
+        public Vec4f ToVec4f()
+        {
+            return new Vec4f(this.r, this.g, this.b, this.a);
+        }
+    }
 
-	public class StatusHudConfigManager {
-		public const string filename = "statushud.json";
+    public class StatusHudOptions
+    {
+        public char temperatureFormat = 'C';
+        public string timeFormat = "12hr";
 
-		protected StatusHudConfig config;
+        public StatusHudOptions(char temperatureFormat, string timeFormat)
+        {
+            this.temperatureFormat = temperatureFormat;
+            this.timeFormat = timeFormat;
+        }
+    }
 
-		protected ICoreClientAPI capi;
+    public class StatusHudConfigManager
+    {
+        public const string filename = "statushud.json";
 
-		public StatusHudConfigManager(ICoreClientAPI capi) {
-			this.capi = capi;
+        protected StatusHudConfig config;
 
-			// Load or create config file.
-			try {
-				this.config = this.capi.LoadModConfig<StatusHudConfig>(StatusHudConfigManager.filename);
-			} catch(Exception) {}
+        protected ICoreClientAPI capi;
 
-			if(this.config == null) {
-				this.config = new StatusHudConfig();
-			}
-			// Create new config file, or update current file to generate missing fields.
-			this.capi.StoreModConfig<StatusHudConfig>(this.config, StatusHudConfigManager.filename);
-		}
+        public StatusHudConfigManager(ICoreClientAPI capi)
+        {
+            this.capi = capi;
 
-		public StatusHudConfig Get() {
-			return this.config;
-		}
+            // Load or create config file.
+            try
+            {
+                this.config = this.capi.LoadModConfig<StatusHudConfig>(StatusHudConfigManager.filename);
+            }
+            catch (Exception) { }
 
-		public void Load(StatusHudSystem system) {
-			foreach(KeyValuePair<int, StatusHudConfigElement> kvp in this.config.elements) {
-				if(system.Set(kvp.Key, kvp.Value.name)) {
-					system.Pos(kvp.Key, kvp.Value.halign, kvp.Value.x, kvp.Value.valign, kvp.Value.y);
-				}
-			}
-		}
+            if (this.config == null)
+            {
+                this.config = new StatusHudConfig();
+            }
+            // Create new config file, or update current file to generate missing fields.
+            this.capi.StoreModConfig<StatusHudConfig>(this.config, StatusHudConfigManager.filename);
+        }
 
-		public void Save(IDictionary<int, StatusHudElement> elements) {
-			// Save data to config.
-			this.config.elements.Clear();
-			foreach(KeyValuePair<int, StatusHudElement> kvp in elements) {
-				this.config.elements.Add(kvp.Key, new StatusHudConfigElement((string)kvp.Value.GetType().GetField("name").GetValue(null),
-						kvp.Value.pos.halign,
-						kvp.Value.pos.x,
-						kvp.Value.pos.valign,
-						kvp.Value.pos.y));
-			}
+        public StatusHudConfig Get()
+        {
+            return this.config;
+        }
 
-			// Save config file.
-			this.capi.StoreModConfig<StatusHudConfig>(this.config, StatusHudConfigManager.filename);
-		}
-	}
+        public void SetOptions(string option, string value)
+        {
+            StatusHudOptions options = this.config.options;
 
-	public class StatusHudConfigElement {
-		public string name;
-		public int halign;
-		public int x;
-		public int valign;
-		public int y;
+            switch (option)
+            {
+                case "temperatureFormat":
+                    switch (value)
+                    {
+                        case "C":
+                        case "F":
+                        case "K":
+                            options.temperatureFormat = value[0];
+                            break;
+                        default:
+                            capi.Logger.Error("[Config] No such value " + value + " exists for " + option);
+                            return;
+                    }
+                    break;
+                case "timeFormat":
+                    switch (value)
+                    {
+                        case "12hr":
+                        case "24hr":
+                            options.timeFormat = value;
+                            break;
+                        default:
+                            capi.Logger.Error("[Config] No such value " + value + " exists for " + option);
+                            return;
+                    }
+                    break;
+                default:
+                    capi.Logger.Error("[Config] Trying to set option " + option + ", but no such field exists");
+                    return;
+            }
+        }
 
-		public StatusHudConfigElement(string name, int halign, int x, int valign, int y) {
-			this.name = name;
-			this.halign = halign;
-			this.x = x;
-			this.valign = valign;
-			this.y = y;
-		}
-	}
+        public void Load(StatusHudSystem system)
+        {
+            foreach (KeyValuePair<int, StatusHudConfigElement> kvp in this.config.elements)
+            {
+                if (system.Set(kvp.Key, kvp.Value.name))
+                {
+                    system.Pos(kvp.Key, kvp.Value.halign, kvp.Value.x, kvp.Value.valign, kvp.Value.y);
+                }
+            }
+        }
+
+        public void Save(IDictionary<int, StatusHudElement> elements)
+        {
+            // Save element data to config.
+            this.config.elements.Clear();
+            foreach (KeyValuePair<int, StatusHudElement> kvp in elements)
+            {
+                this.config.elements.Add(kvp.Key, new StatusHudConfigElement((string)kvp.Value.GetType().GetField("name").GetValue(null),
+                        kvp.Value.pos.halign,
+                        kvp.Value.pos.x,
+                        kvp.Value.pos.valign,
+                        kvp.Value.pos.y));
+            }
+
+            // Save config file.
+            this.capi.StoreModConfig<StatusHudConfig>(this.config, StatusHudConfigManager.filename);
+        }
+
+        public void Save()
+        {
+            this.capi.StoreModConfig<StatusHudConfig>(this.config, StatusHudConfigManager.filename);
+        }
+    }
+
+    public class StatusHudConfigElement
+    {
+        public string name;
+        public int halign;
+        public int x;
+        public int valign;
+        public int y;
+
+        public StatusHudConfigElement(string name, int halign, int x, int valign, int y)
+        {
+            this.name = name;
+            this.halign = halign;
+            this.x = x;
+            this.valign = valign;
+            this.y = y;
+        }
+    }
 }
