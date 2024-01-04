@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "name": "Status HUD",
+  "modid": "statushud",
+  "version": "1.4.3",
+  "authors": ["Rangelost"],
+  "description": "Displays status information on the HUD.",
+  "side": "Client",
+  "dependencies": { 
+	"game": "1.18.8"
+  }
+}
