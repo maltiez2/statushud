@@ -62,7 +62,7 @@ namespace StatusHud
     public class StatusHudOptions
     {
         public char temperatureFormat = 'C';
-        public string timeFormat = "12hr";
+        public string timeFormat = "24hr";
 
         public StatusHudOptions(char temperatureFormat, string timeFormat)
         {

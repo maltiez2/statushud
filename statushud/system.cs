@@ -566,7 +566,7 @@ namespace StatusHud
             this.Pos(-6, StatusHudPos.halignLeft, sideX, StatusHudPos.valignBottom, bottomY);
 
             this.Set(-5, StatusHudTimeElement.name);
-            this.Pos(-5, StatusHudPos.halignLeft, sideX + (int)(offset * 1.4f), StatusHudPos.valignBottom, bottomY);
+            this.Pos(-5, StatusHudPos.halignLeft, sideX + (int)(offset * 1.3f), StatusHudPos.valignBottom, bottomY);
 
             this.Set(-4, StatusHudWeatherElement.name);
             this.Pos(-4, StatusHudPos.halignLeft, sideX + (int)(offset * 2.5f), StatusHudPos.valignBottom, bottomY);

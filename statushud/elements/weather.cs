@@ -15,6 +15,7 @@ namespace StatusHud
 
         protected WeatherSystemBase weatherSystem;
         protected StatusHudWeatherRenderer renderer;
+        protected StatusHudConfig config;
 
         protected char tempFormat;
         static readonly string[] tempFormatWords = new string[] { "C", "F", "K" };
@@ -31,6 +32,8 @@ namespace StatusHud
 
             this.renderer = new StatusHudWeatherRenderer(system, slot, this, config.text);
             this.system.capi.Event.RegisterRenderer(this.renderer, EnumRenderStage.Ortho);
+
+            this.config = config;
 
             this.tempFormat = config.options.temperatureFormat;
             this.textureId = this.system.textures.empty.TextureId;
@@ -55,6 +58,8 @@ namespace StatusHud
         public override void Tick()
         {
             ClimateCondition cc = this.system.capi.World.BlockAccessor.GetClimateAt(this.system.capi.World.Player.Entity.Pos.AsBlockPos, EnumGetClimateMode.NowValues);
+            this.tempFormat = config.options.temperatureFormat;
+
             string temperature;
 
             switch (tempFormat)

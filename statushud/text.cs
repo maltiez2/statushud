@@ -31,7 +31,7 @@ namespace StatusHud {
 			this.iconSize = iconSize;
 
 			this.colour = config.colour.ToVec4f();
-			this.width = this.iconSize * 2;
+			this.width = this.iconSize * 3;
 			this.height = this.iconSize;
 
 			this.dialogName = dialogNamePrefix + this.key;

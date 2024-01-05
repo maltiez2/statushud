@@ -16,11 +16,14 @@ namespace StatusHud
         public static readonly string[] timeFormatWords = new string[] { "12hr", "24hr" };
 
         protected StatusHudTimeRenderer renderer;
+        protected StatusHudConfig config;
 
         public StatusHudTimeElement(StatusHudSystem system, int slot, StatusHudConfig config) : base(system, slot)
         {
             this.renderer = new StatusHudTimeRenderer(system, slot, this, config.text);
             this.system.capi.Event.RegisterRenderer(this.renderer, EnumRenderStage.Ortho);
+
+            this.config = config;
 
             this.textureId = this.system.textures.empty.TextureId;
             this.timeFormat = config.options.timeFormat;
@@ -45,8 +48,10 @@ namespace StatusHud
         public override void Tick()
         {
             TimeSpan ts = TimeSpan.FromHours(this.system.capi.World.Calendar.HourOfDay);
+            this.timeFormat = config.options.timeFormat;
+            
             string time;
-
+            
             if (this.timeFormat == "12hr")
             {
                 DateTime dateTime = new DateTime(ts.Ticks);
