@@ -60,8 +60,12 @@ namespace StatusHud
                 if (!slot.Empty
                         && slot.Itemstack.Item is ItemWearable)
                 {
-                    average += slot.Itemstack.Collectible.GetRemainingDurability(slot.Itemstack)
-                            / (float)slot.Itemstack.Collectible.GetMaxDurability(slot.Itemstack);
+                    int max = slot.Itemstack.Collectible.GetMaxDurability(slot.Itemstack);
+
+                    // For cases like the night vision mask, where the armour has no durability
+                    if (max <= 0) continue;
+
+                    average += slot.Itemstack.Collectible.GetRemainingDurability(slot.Itemstack) / (float)max;
                     count++;
                 }
             }
