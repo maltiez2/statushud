@@ -61,12 +61,12 @@ namespace StatusHud
 
     public class StatusHudOptions
     {
-        public char temperatureFormat = 'C';
+        public char temperatureScale = 'C';
         public string timeFormat = "24hr";
 
-        public StatusHudOptions(char temperatureFormat, string timeFormat)
+        public StatusHudOptions(char temperatureScale, string timeFormat)
         {
-            this.temperatureFormat = temperatureFormat;
+            this.temperatureScale = temperatureScale;
             this.timeFormat = timeFormat;
         }
     }

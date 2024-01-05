@@ -61,7 +61,7 @@ namespace StatusHud
             if (tempDiff <= -0.5f)
             {
                 string textRender;
-                switch (config.options.temperatureFormat)
+                switch (config.options.temperatureScale)
                 {
                     case 'F':
                         textRender = string.Format("{0:N1}", tempDiff * cfratio) + "°F";

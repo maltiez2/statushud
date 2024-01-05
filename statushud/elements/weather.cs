@@ -17,7 +17,7 @@ namespace StatusHud
         protected StatusHudWeatherRenderer renderer;
         protected StatusHudConfig config;
 
-        protected char tempFormat;
+        protected char tempScale;
         static readonly string[] tempFormatWords = new string[] { "C", "F", "K" };
 
         protected const float cfratio = (9f / 5f);
@@ -35,13 +35,13 @@ namespace StatusHud
 
             this.config = config;
 
-            this.tempFormat = config.options.temperatureFormat;
+            this.tempScale = config.options.temperatureScale;
             this.textureId = this.system.textures.empty.TextureId;
 
             // Config error checking
-            if (!tempFormatWords.Any(str => str.Contains(tempFormat)))
+            if (!tempFormatWords.Any(str => str.Contains(tempScale)))
             {
-                system.capi.Logger.Warning("[" + this.getTextKey() + "] " + tempFormat + " is not a valid value for temperatureFormat. Defaulting to C");
+                system.capi.Logger.Warning("[" + this.getTextKey() + "] " + tempScale + " is not a valid value for temperatureFormat. Defaulting to C");
             }
         }
 
@@ -58,11 +58,11 @@ namespace StatusHud
         public override void Tick()
         {
             ClimateCondition cc = this.system.capi.World.BlockAccessor.GetClimateAt(this.system.capi.World.Player.Entity.Pos.AsBlockPos, EnumGetClimateMode.NowValues);
-            this.tempFormat = config.options.temperatureFormat;
+            this.tempScale = config.options.temperatureScale;
 
             string temperature;
 
-            switch (tempFormat)
+            switch (tempScale)
             {
                 case 'F':
                     temperature = (int)Math.Round((cc.Temperature * cfratio) + cfdiff, 0) + "°F";

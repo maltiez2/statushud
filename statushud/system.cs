@@ -26,7 +26,7 @@ namespace StatusHud
         public static readonly string[] visWords = new string[] { visWordShow, visWordHide };
 
         public static readonly string[] timeFormatWords = new string[] { "12hr", "24hr" };
-        public static readonly string[] tempFormatWords = new string[] { "C", "F", "K" };
+        public static readonly string[] tempScaleWords = new string[] { "C", "F", "K" };
 
         public const string domain = "statushud";
         protected const int slowListenInterval = 1000;
@@ -199,10 +199,10 @@ namespace StatusHud
                             .WithArgs(capi.ChatCommands.Parsers.WordRange("12hr/24hr", StatusHudSystem.timeFormatWords))
                             .HandleWith(this.cmdTimeFormat)
                             .EndSubCommand()
-                        .BeginSubCommand("tempformat")
-                            .WithDescription("Change temperature elements to °C, °F, or °K")
-                            .WithArgs(capi.ChatCommands.Parsers.WordRange("C/F/K", tempFormatWords))
-                            .HandleWith(this.cmdTempFormat)
+                        .BeginSubCommand("tempscale")
+                            .WithDescription("Change temperature scale to °C, °F, or °K")
+                            .WithArgs(capi.ChatCommands.Parsers.WordRange("C/F/K", tempScaleWords))
+                            .HandleWith(this.cmdTempScale)
                             .EndSubCommand()
                     .EndSubCommand()
                     .BeginSubCommand("help")
@@ -518,13 +518,13 @@ namespace StatusHud
             return TextCommandResult.Success(print(message));
         }
 
-        protected TextCommandResult cmdTempFormat(TextCommandCallingArgs args)
+        protected TextCommandResult cmdTempScale(TextCommandCallingArgs args)
         {
-            string tempFormat = (string)args[0];
+            string tempScale = (string)args[0];
 
-            this.config.Get().options.temperatureFormat = tempFormat[0];
+            this.config.Get().options.temperatureScale = tempScale[0];
 
-            string message = "Temperature format now set to °" + tempFormat;
+            string message = "Temperature scale now set to °" + tempScale;
 
 
             this.saveConfig();
