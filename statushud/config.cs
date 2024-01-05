@@ -102,44 +102,6 @@ namespace StatusHud
         {
             return this.config;
         }
-
-        public void SetOptions(string option, string value)
-        {
-            StatusHudOptions options = this.config.options;
-
-            switch (option)
-            {
-                case "temperatureFormat":
-                    switch (value)
-                    {
-                        case "C":
-                        case "F":
-                        case "K":
-                            options.temperatureFormat = value[0];
-                            break;
-                        default:
-                            capi.Logger.Error("[Config] No such value " + value + " exists for " + option);
-                            return;
-                    }
-                    break;
-                case "timeFormat":
-                    switch (value)
-                    {
-                        case "12hr":
-                        case "24hr":
-                            options.timeFormat = value;
-                            break;
-                        default:
-                            capi.Logger.Error("[Config] No such value " + value + " exists for " + option);
-                            return;
-                    }
-                    break;
-                default:
-                    capi.Logger.Error("[Config] Trying to set option " + option + ", but no such field exists");
-                    return;
-            }
-        }
-
         public void Load(StatusHudSystem system)
         {
             foreach (KeyValuePair<int, StatusHudConfigElement> kvp in this.config.elements)

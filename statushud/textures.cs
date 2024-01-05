@@ -16,8 +16,10 @@ namespace StatusHud {
 		public LoadedTexture armour;
 
 		public LoadedTexture bodyheat;
+        public LoadedTexture bodyheatHot;
+        public LoadedTexture bodyheatCold;
 
-		public LoadedTexture compass;
+        public LoadedTexture compass;
 		public LoadedTexture compassNeedle;
 
 		public LoadedTexture dateAutumn;
@@ -117,8 +119,10 @@ namespace StatusHud {
 			this.load("armour", ref this.armour);
 
 			this.load("bodyheat", ref this.bodyheat);
+            this.load("bodyheat_hot", ref this.bodyheatHot);
+            this.load("bodyheat_cold", ref this.bodyheatCold);
 
-			this.load("altitude", ref this.altitude);
+            this.load("altitude", ref this.altitude);
 			this.load("altitude_needle", ref this.altitudeNeedle);
 
 			this.load("compass", ref this.compass);

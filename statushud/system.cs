@@ -82,7 +82,7 @@ namespace StatusHud
                 case StatusHudArmourElement.name:
                     return new StatusHudArmourElement(this, slot, textConfig);
                 case StatusHudBodyheatElement.name:
-                    return new StatusHudBodyheatElement(this, slot, textConfig);
+                    return new StatusHudBodyheatElement(this, slot, config);
                 case StatusHudCompassElement.name:
                     return new StatusHudCompassElement(this, slot, textConfig, this.config.Get().compassAbsolute);
                 case StatusHudDateElement.name:
@@ -511,7 +511,7 @@ namespace StatusHud
         {
             string timeFormat = (string)args[0];
 
-            this.config.SetOptions("timeFormat", timeFormat);
+            this.config.Get().options.timeFormat = timeFormat;
 
             string message = "Time format now set to " + timeFormat + " time";
 
@@ -522,7 +522,7 @@ namespace StatusHud
         {
             string tempFormat = (string)args[0];
 
-            this.config.SetOptions("temperatureFormat", tempFormat);
+            this.config.Get().options.temperatureFormat = tempFormat[0];
 
             string message = "Temperature format now set to °" + tempFormat;
 
