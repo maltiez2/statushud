@@ -13,6 +13,7 @@ namespace StatusHud
 
         public int textureId;
         protected string timeFormat;
+        public static readonly string[] timeFormatWords = new string[] { "12hr", "24hr" };
 
         protected StatusHudTimeRenderer renderer;
 
@@ -23,6 +24,12 @@ namespace StatusHud
 
             this.textureId = this.system.textures.empty.TextureId;
             this.timeFormat = config.options.timeFormat;
+
+            // Config error checking
+            if (!timeFormatWords.Any(str => str.Contains(timeFormat)))
+            {
+                system.capi.Logger.Warning("[" + this.getTextKey() + "] " + timeFormat + " is not a valid value for timeFormat. Defaulting to 24hr");
+            }
         }
 
         protected override StatusHudRenderer getRenderer()

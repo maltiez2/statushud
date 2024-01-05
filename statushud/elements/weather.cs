@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
@@ -9,13 +10,15 @@ namespace StatusHud
     public class StatusHudWeatherElement : StatusHudElement
     {
         public new const string name = "weather";
-        public new const string desc = "The 'weather' element displays the current temperature (in °C) and an icon for the current condition.";
+        public new const string desc = "The 'weather' element displays the current temperature and an icon for the current condition.";
         protected const string textKey = "shud-weather";
 
         protected WeatherSystemBase weatherSystem;
         protected StatusHudWeatherRenderer renderer;
 
         protected char tempFormat;
+        static readonly string[] tempFormatWords = new string[] { "C", "F", "K" };
+
         protected const float cfratio = (9f / 5f);
         protected const float cfdiff = 32;
         protected const float ckdiff = 273.15f;
@@ -31,6 +34,12 @@ namespace StatusHud
 
             this.tempFormat = config.options.temperatureFormat;
             this.textureId = this.system.textures.empty.TextureId;
+
+            // Config error checking
+            if (!tempFormatWords.Any(str => str.Contains(tempFormat)))
+            {
+                system.capi.Logger.Warning("[" + this.getTextKey() + "] " + tempFormat + " is not a valid value for temperatureFormat. Defaulting to C");
+            }
         }
 
         protected override StatusHudRenderer getRenderer()
