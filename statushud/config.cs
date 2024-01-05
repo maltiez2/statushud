@@ -12,7 +12,7 @@ namespace StatusHud
         public bool showHidden = false;
         public StatusHudTextConfig text = new StatusHudTextConfig(new StatusHudColour(0.91f, 0.87f, 0.81f, 1), 16, true, 0, -19, EnumTextOrientation.Center);
         public string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-        public StatusHudOptions options = new StatusHudOptions('C', "12hr");
+        public StatusHudOptions options = new StatusHudOptions('C', "24hr");
         public bool compassAbsolute = false;
         public IDictionary<int, StatusHudConfigElement> elements = new Dictionary<int, StatusHudConfigElement>();
         public bool installed = false;
