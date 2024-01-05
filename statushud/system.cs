@@ -106,9 +106,9 @@ namespace StatusHud
                 case StatusHudTempstormElement.name:
                     return new StatusHudTempstormElement(this, slot, textConfig);
                 case StatusHudTimeElement.name:
-                    return new StatusHudTimeElement(this, slot, textConfig);
+                    return new StatusHudTimeElement(this, slot, config);
                 case StatusHudTimeLocalElement.name:
-                    return new StatusHudTimeLocalElement(this, slot, textConfig);
+                    return new StatusHudTimeLocalElement(this, slot, config);
                 case StatusHudWeatherElement.name:
                     return new StatusHudWeatherElement(this, slot,  config);
                 case StatusHudWetElement.name:
@@ -509,7 +509,11 @@ namespace StatusHud
 
         protected TextCommandResult cmdTimeFormat(TextCommandCallingArgs args)
         {
-            string message = "testing: TimeFormat";
+            string timeFormat = (string)args[0];
+
+            this.config.SetOptions("timeFormat", timeFormat);
+
+            string message = "Time format now set to " + timeFormat + " time";
 
             return TextCommandResult.Success(print(message));
         }
@@ -562,7 +566,7 @@ namespace StatusHud
             this.Pos(-6, StatusHudPos.halignLeft, sideX, StatusHudPos.valignBottom, bottomY);
 
             this.Set(-5, StatusHudTimeElement.name);
-            this.Pos(-5, StatusHudPos.halignLeft, sideX + offset, StatusHudPos.valignBottom, bottomY);
+            this.Pos(-5, StatusHudPos.halignLeft, sideX + (int)(offset * 1.4f), StatusHudPos.valignBottom, bottomY);
 
             this.Set(-4, StatusHudWeatherElement.name);
             this.Pos(-4, StatusHudPos.halignLeft, sideX + (int)(offset * 2.5f), StatusHudPos.valignBottom, bottomY);

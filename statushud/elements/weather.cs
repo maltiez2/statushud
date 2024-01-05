@@ -30,7 +30,6 @@ namespace StatusHud
             this.system.capi.Event.RegisterRenderer(this.renderer, EnumRenderStage.Ortho);
 
             this.tempFormat = config.options.temperatureFormat;
-
             this.textureId = this.system.textures.empty.TextureId;
         }
 

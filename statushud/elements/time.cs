@@ -1,84 +1,122 @@
 using System;
+using System.Globalization;
+using System.Linq;
 using Vintagestory.API.Client;
 
-namespace StatusHud {
-	public class StatusHudTimeElement: StatusHudElement {
-		public new const string name = "time";
-		public new const string desc = "The 'time' element displays the current time and an icon for the position of the sun relative to the horizon.";
-		protected const string textKey = "shud-time";
+namespace StatusHud
+{
+    public class StatusHudTimeElement : StatusHudElement
+    {
+        public new const string name = "time";
+        public new const string desc = "The 'time' element displays the current time and an icon for the position of the sun relative to the horizon.";
+        protected const string textKey = "shud-time";
 
-		public int textureId;
+        public int textureId;
+        protected string timeFormat;
 
-		protected StatusHudTimeRenderer renderer;
+        protected StatusHudTimeRenderer renderer;
 
-		public StatusHudTimeElement(StatusHudSystem system, int slot, StatusHudTextConfig config): base(system, slot) {
-			this.renderer = new StatusHudTimeRenderer(system, slot, this, config);
-			this.system.capi.Event.RegisterRenderer(this.renderer, EnumRenderStage.Ortho);
+        public StatusHudTimeElement(StatusHudSystem system, int slot, StatusHudConfig config) : base(system, slot)
+        {
+            this.renderer = new StatusHudTimeRenderer(system, slot, this, config.text);
+            this.system.capi.Event.RegisterRenderer(this.renderer, EnumRenderStage.Ortho);
 
-			this.textureId = this.system.textures.empty.TextureId;
-		}
+            this.textureId = this.system.textures.empty.TextureId;
+            this.timeFormat = config.options.timeFormat;
+        }
 
-		protected override StatusHudRenderer getRenderer() {
-			return this.renderer;
-		}
+        protected override StatusHudRenderer getRenderer()
+        {
+            return this.renderer;
+        }
 
-		public virtual string getTextKey() {
-			return textKey;
-		}
+        public virtual string getTextKey()
+        {
+            return textKey;
+        }
 
-		public override void Tick() {
-			TimeSpan ts = TimeSpan.FromHours(this.system.capi.World.Calendar.HourOfDay);
-			this.renderer.setText(ts.ToString("hh':'mm"));
+        public override void Tick()
+        {
+            TimeSpan ts = TimeSpan.FromHours(this.system.capi.World.Calendar.HourOfDay);
+            string time;
 
-			if(this.system.capi.World.Calendar.SunPosition.Y < -5) {
-				// Night.
-				this.textureId = this.system.textures.timeNight.TextureId;
-			} else if(this.system.capi.World.Calendar.SunPosition.Y < 5) {
-				// Twilight.
-				this.textureId = this.system.textures.timeTwilight.TextureId;
-			} else if(this.system.capi.World.Calendar.SunPosition.Y < 15) {
-				// Low.
-				this.textureId = this.system.textures.timeDayLow.TextureId;
-			} else if(this.system.capi.World.Calendar.SunPosition.Y < 30) {
-				// Mid.
-				this.textureId = this.system.textures.timeDayMid.TextureId;
-			} else {
-				// High.
-				this.textureId = this.system.textures.timeDayHigh.TextureId;
-			}
-		}
+            if (this.timeFormat == "12hr")
+            {
+                DateTime dateTime = new DateTime(ts.Ticks);
+                time = dateTime.ToString("h:mmtt", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                time = ts.ToString("hh':'mm");
+            }
 
-		public override void Dispose() {
-			this.renderer.Dispose();
-			this.system.capi.Event.UnregisterRenderer(this.renderer, EnumRenderStage.Ortho);
-		}
-	}
+            this.renderer.setText(time);
 
-	public class StatusHudTimeRenderer: StatusHudRenderer {
-		protected StatusHudTimeElement element;
-		protected StatusHudText text;
+            if (this.system.capi.World.Calendar.SunPosition.Y < -5)
+            {
+                // Night.
+                this.textureId = this.system.textures.timeNight.TextureId;
+            }
+            else if (this.system.capi.World.Calendar.SunPosition.Y < 5)
+            {
+                // Twilight.
+                this.textureId = this.system.textures.timeTwilight.TextureId;
+            }
+            else if (this.system.capi.World.Calendar.SunPosition.Y < 15)
+            {
+                // Low.
+                this.textureId = this.system.textures.timeDayLow.TextureId;
+            }
+            else if (this.system.capi.World.Calendar.SunPosition.Y < 30)
+            {
+                // Mid.
+                this.textureId = this.system.textures.timeDayMid.TextureId;
+            }
+            else
+            {
+                // High.
+                this.textureId = this.system.textures.timeDayHigh.TextureId;
+            }
+        }
 
-		public StatusHudTimeRenderer(StatusHudSystem system, int slot, StatusHudTimeElement element, StatusHudTextConfig config): base(system, slot) {
-			this.element = element;
+        public override void Dispose()
+        {
+            this.renderer.Dispose();
+            this.system.capi.Event.UnregisterRenderer(this.renderer, EnumRenderStage.Ortho);
+        }
+    }
 
-			this.text = new StatusHudText(this.system.capi, this.slot, this.element.getTextKey(), config, this.system.textures.size);
-		}
+    public class StatusHudTimeRenderer : StatusHudRenderer
+    {
+        protected StatusHudTimeElement element;
+        protected StatusHudText text;
 
-		public void setText(string value) {
-			this.text.Set(value);
-		}
+        public StatusHudTimeRenderer(StatusHudSystem system, int slot, StatusHudTimeElement element, StatusHudTextConfig config) : base(system, slot)
+        {
+            this.element = element;
 
-		protected override void update() {
-			base.update();
-			this.text.Pos(this.pos);
-		}
+            this.text = new StatusHudText(this.system.capi, this.slot, this.element.getTextKey(), config, this.system.textures.size);
+        }
 
-		protected override void render() {
-			this.system.capi.Render.RenderTexture(this.element.textureId, this.x, this.y, this.w, this.h);
-		}
+        public void setText(string value)
+        {
+            this.text.Set(value);
+        }
 
-		public override void Dispose() {
-			this.text.Dispose();
-		}
-	}
+        protected override void update()
+        {
+            base.update();
+            this.text.Pos(this.pos);
+        }
+
+        protected override void render()
+        {
+            this.system.capi.Render.RenderTexture(this.element.textureId, this.x, this.y, this.w, this.h);
+        }
+
+        public override void Dispose()
+        {
+            this.text.Dispose();
+        }
+    }
 }
