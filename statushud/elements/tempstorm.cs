@@ -11,8 +11,10 @@ namespace StatusHud {
 		protected const string textKey = "shud-tempstorm";
 		protected const string harmonyId = "shud-tempstorm";
 
-		// Hard-coded values from SystemTemporalStability.
-		protected const double approachingThreshold = 0.35;
+        public override string Name => name;
+
+        // Hard-coded values from SystemTemporalStability.
+        protected const double approachingThreshold = 0.35;
 		protected const double imminentThreshold = 0.02;
 		protected const double waningThreshold = 0.02;
 

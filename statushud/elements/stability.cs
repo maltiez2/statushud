@@ -8,7 +8,9 @@ namespace StatusHud {
 		public new const string desc = "The 'stability' element displays the temporal stability at the player's position if it is below 100%. Otherwise, it is hidden.";
 		protected const string textKey = "shud-stability";
 
-		protected const float maxStability = 1.5f;		// Hard-coded in SystemTemporalStability.
+        public override string Name => name;
+
+        protected const float maxStability = 1.5f;		// Hard-coded in SystemTemporalStability.
 
 		public bool active;
 

@@ -9,7 +9,9 @@ namespace StatusHud {
 		public new const string desc = "The 'compass' element displays the player's facing direction (in degrees) in relation to the north.";
 		protected const string textKey = "shud-compass";
 
-		protected WeatherSystemBase weatherSystem;
+        public override string Name => name;
+
+        protected WeatherSystemBase weatherSystem;
 		protected StatusHudCompassRenderer renderer;
 
 		public StatusHudCompassElement(StatusHudSystem system, int slot, StatusHudTextConfig config, bool absolute): base(system, slot) {

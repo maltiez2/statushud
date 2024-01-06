@@ -8,7 +8,9 @@ namespace StatusHud {
 		public new const string desc = "The 'speed' element displays the player's current speed (in m/s).";
 		protected const string textKey = "shud-speed";
 
-		protected StatusHudSpeedRenderer renderer;
+        public override string Name => name;
+
+        protected StatusHudSpeedRenderer renderer;
 
 		public StatusHudSpeedElement(StatusHudSystem system, int slot, StatusHudTextConfig config): base(system, slot) {
 			this.renderer = new StatusHudSpeedRenderer(system, slot, this, config);

@@ -16,6 +16,8 @@ namespace StatusHud
         protected const string textKey = "shud-riftactivity";
         protected const string harmonyId = "shud-riftactivity";
 
+        public override string Name => name;
+
         public int textureId;
         public bool active;
 

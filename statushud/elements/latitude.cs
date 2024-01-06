@@ -8,7 +8,9 @@ namespace StatusHud {
 		public new const string desc = "The 'latitude' element displays the player's current latitude (in degrees).";
 		protected const string textKey = "shud-latitude";
 
-		protected WeatherSystemBase weatherSystem;
+        public override string Name => name;
+
+        protected WeatherSystemBase weatherSystem;
 		protected StatusHudLatitudeRenderer renderer;
 
 		public float needleOffset;

@@ -664,9 +664,9 @@ namespace StatusHud
         }
 
 
-        private void DrawConfigLibSettings(string id)
+        private void DrawConfigLibSettings(string id, ConfigLib.ControlButtons controlButtons)
         {
-            if (ImGui.Button($"Save##{id}")) saveConfig();
+            if (controlButtons.Save) saveConfig();
 
             foreach ((int elementId, StatusHudElement element) in elements)
             {
@@ -676,28 +676,57 @@ namespace StatusHud
 
         private void DrawElementSettings(int elementId, StatusHudElement element)
         {
-            StatusHudPosEditor(element.pos, $"hudelement{elementId}");
+            if (!ImGui.CollapsingHeader($"{element.Name}##{elementId}")) return;
+            if (StatusHudPosEditor(element.pos, $"hudelement{elementId}"))
+            {
+                element.Pos();
+                element.Ping();
+            }
         }
 
-        private void StatusHudPosEditor(StatusHudPos value, string id)
+        private bool StatusHudPosEditor(StatusHudPos value, string id)
         {
-            ImGui.DragInt($"Horizontal offset##{id}", ref value.x);
-            ImGui.DragInt($"Vertical offset##{id}", ref value.y);
-            AlignEditor(ref value.halign, $"Horizontal align##{id}");
-            AlignEditor(ref value.valign, $"Vertical align##{id}");
+            bool changed = false;
+            if (IntEditor($"Horizontal offset##{id}", ref value.halign)) changed = true;
+            if (IntEditor($"Vertical offset##{id}", ref value.valign)) changed = true;
+            if (AlignEditor($"Horizontal align##{id}", ref value.halign, horizontal: true)) changed = true;
+            if (AlignEditor($"Vertical align##{id}", ref value.valign, horizontal: false)) changed = true;
+            return changed;
         }
 
-        private static readonly string[] alignTypes = new string[]
+        private static bool IntEditor(string title, ref int value)
+        {
+            int prev = value;
+            ImGui.DragInt(title, ref value);
+            return prev != value;
+        }
+
+        private static readonly string[] alignTypesHorizontal = new string[]
         {
             "Left",
             "Center",
             "Right"
         };
-        private void AlignEditor(ref int value, string title)
+        private static readonly string[] alignTypesVertical = new string[]
+        {
+            "Top",
+            "Center",
+            "Bottom"
+        };
+        private static bool AlignEditor(string title, ref int value, bool horizontal)
         {
             int shiftedValue = value + 1;
-            ImGui.Combo(title, ref shiftedValue, alignTypes, alignTypes.Length);
+            if (horizontal)
+            {
+                ImGui.Combo(title, ref shiftedValue, alignTypesHorizontal, alignTypesHorizontal.Length);
+            }
+            else
+            {
+                ImGui.Combo(title, ref shiftedValue, alignTypesVertical, alignTypesVertical.Length);
+            }
+            bool changed = shiftedValue != value + 1;
             value = shiftedValue - 1;
+            return changed;
         }
     }
 }

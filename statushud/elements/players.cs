@@ -6,7 +6,9 @@ namespace StatusHud {
 		public new const string desc = "The 'players' element displays the number of players currently online.";
 		protected const string textKey = "shud-players";
 
-		protected StatusHudPlayersRenderer renderer;
+        public override string Name => name;
+
+        protected StatusHudPlayersRenderer renderer;
 
 		public StatusHudPlayersElement(StatusHudSystem system, int slot, StatusHudTextConfig config): base(system, slot) {
 			this.renderer = new StatusHudPlayersRenderer(system, slot, this, config);

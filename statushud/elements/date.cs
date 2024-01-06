@@ -7,7 +7,9 @@ namespace StatusHud {
 		public new const string desc = "The 'date' element displays the current date and an icon for the current season.";
 		protected const string textKey = "shud-date";
 
-		public int textureId;
+        public override string Name => name;
+
+        public int textureId;
 
 		protected StatusHudDateRenderer renderer;
 		protected string[] monthNames;

@@ -7,7 +7,9 @@ namespace StatusHud {
 		public new const string name = "room";
 		public new const string desc = "The 'room' element displays a house icon when inside a room or a cabin icon when inside a small room (cellar), and a sun icon when inside a greenhouse. Otherwise, it is hidden.";
 
-		public bool inside;
+        public override string Name => name;
+
+        public bool inside;
 		public bool cellar;
 		public bool greenhouse;
 

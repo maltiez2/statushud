@@ -7,7 +7,9 @@ namespace StatusHud {
 		public new const string desc = "The 'wet' element displays how wet (in %) the player is. If the player is dry, it is hidden.";
 		protected const string textKey = "shud-wet";
 
-		public bool active;
+        public override string Name => name;
+
+        public bool active;
 
 		protected StatusHudWetRenderer renderer;
 
