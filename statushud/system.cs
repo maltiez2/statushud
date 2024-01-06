@@ -3,6 +3,7 @@ using ImGuiNET;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -668,13 +669,37 @@ namespace StatusHud
         {
             if (controlButtons.Save) saveConfig();
 
+            bool textChanged = DrawConfigEditor(id);
+
             foreach ((int elementId, StatusHudElement element) in elements)
             {
-                DrawElementSettings(elementId, element);
+                DrawElementSettings($"{id}{elementId}", element);
             }
         }
 
-        private void DrawElementSettings(int elementId, StatusHudElement element)
+        private bool DrawConfigEditor(string id)
+        {
+            Vector4 value = new()
+            {
+                X = config.Get().text.colour.r,
+                Y = config.Get().text.colour.g,
+                Z = config.Get().text.colour.b,
+                W = config.Get().text.colour.a
+            };
+
+            ImGui.ColorEdit4($"Text color##{id}", ref value);
+
+            bool changed = config.Get().text.colour.r != value.X || config.Get().text.colour.g != value.Y || config.Get().text.colour.b != value.Z || config.Get().text.colour.a != value.W;
+
+            config.Get().text.colour.r = value.X;
+            config.Get().text.colour.g = value.Y;
+            config.Get().text.colour.b = value.Z;
+            config.Get().text.colour.a = value.W;
+
+            return changed;
+        }
+
+        private void DrawElementSettings(string elementId, StatusHudElement element)
         {
             if (!ImGui.CollapsingHeader($"{element.Name}##{elementId}")) return;
             if (StatusHudPosEditor(element.pos, $"hudelement{elementId}"))
@@ -687,8 +712,8 @@ namespace StatusHud
         private bool StatusHudPosEditor(StatusHudPos value, string id)
         {
             bool changed = false;
-            if (IntEditor($"Horizontal offset##{id}", ref value.halign)) changed = true;
-            if (IntEditor($"Vertical offset##{id}", ref value.valign)) changed = true;
+            if (IntEditor($"Horizontal offset##{id}", ref value.x)) changed = true;
+            if (IntEditor($"Vertical offset##{id}", ref value.y)) changed = true;
             if (AlignEditor($"Horizontal align##{id}", ref value.halign, horizontal: true)) changed = true;
             if (AlignEditor($"Vertical align##{id}", ref value.valign, horizontal: false)) changed = true;
             return changed;

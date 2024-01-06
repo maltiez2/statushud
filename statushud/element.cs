@@ -9,8 +9,9 @@ namespace StatusHud {
 		public const string desc = "No description available.";
 
 		public virtual string Name => name;
+		public virtual StatusHudText Text => null;
 
-		protected StatusHudSystem system;
+        protected StatusHudSystem system;
 		protected int slot;
 
 		public bool fast;

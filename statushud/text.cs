@@ -180,5 +180,10 @@ namespace StatusHud {
 					.WithOrientation(this.config.align)
 					.WithStroke(new double[] { 0, 0, 0, 0.5 }, 2);
 		}
+
+		public void ReloadFont()
+		{
+			font.WithColor(new double[] { this.colour.R, this.colour.G, this.colour.B, this.colour.A });
+		}
 	}
 }
