@@ -36,9 +36,15 @@ namespace StatusHud {
 
 		public LoadedTexture players;
 
-		public LoadedTexture rift;
+		public LoadedTexture riftCalm;
+        public LoadedTexture riftLow;
+        public LoadedTexture riftMedium;
+        public LoadedTexture riftHigh;
+        public LoadedTexture riftVeryHigh;
+        public LoadedTexture riftApocalyptic;
 
-		public LoadedTexture roomRoom;
+
+        public LoadedTexture roomRoom;
 		public LoadedTexture roomCellar;
 		public LoadedTexture roomGreenhouse;
 
@@ -142,9 +148,14 @@ namespace StatusHud {
 
 			this.load("players", ref this.players);
 
-			this.load("rift", ref this.rift);
+			this.load("rift_calm", ref this.riftCalm);
+            this.load("rift_low", ref this.riftLow);
+            this.load("rift_medium", ref this.riftMedium);
+            this.load("rift_high", ref this.riftHigh);
+            this.load("rift_veryhigh", ref this.riftVeryHigh);
+            this.load("rift_apocalyptic", ref this.riftApocalyptic);
 
-			this.load("room_room", ref this.roomRoom);
+            this.load("room_room", ref this.roomRoom);
 			this.load("room_cellar", ref this.roomCellar);
 			this.load("room_greenhouse", ref this.roomGreenhouse);
 

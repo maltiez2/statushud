@@ -15,6 +15,9 @@
       <HintPath>F:\Non-Steam Games\Vintagestory/Lib/cairo-sharp.dll</HintPath>
 		<Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>F:\Non-Steam Games\Vintagestory\Lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
       <Private>false</Private>

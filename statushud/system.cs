@@ -42,6 +42,7 @@ namespace StatusHud
             typeof(StatusHudLatitudeElement),
             typeof(StatusHudLightElement),
             typeof(StatusHudPlayersElement),
+            typeof(StatusHudRiftActivityElement),
             typeof(StatusHudRoomElement),
             typeof(StatusHudSleepElement),
             typeof(StatusHudSpeedElement),
@@ -95,6 +96,8 @@ namespace StatusHud
                     return new StatusHudLightElement(this, slot, textConfig);
                 case StatusHudPlayersElement.name:
                     return new StatusHudPlayersElement(this, slot, textConfig);
+                case StatusHudRiftActivityElement.name:
+                    return new StatusHudRiftActivityElement(this, slot, textConfig);
                 case StatusHudRoomElement.name:
                     return new StatusHudRoomElement(this, slot);
                 case StatusHudSleepElement.name:
