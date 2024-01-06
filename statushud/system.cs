@@ -1,3 +1,6 @@
+using ConfigLib;
+using ImGuiNET;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -227,6 +230,8 @@ namespace StatusHud
                 this.config.Get().installed = true;
                 this.saveConfig();
             }
+
+            capi.ModLoader.GetModSystem<ConfigLibModSystem>().RegisterCustomConfig("statushudcont", DrawConfigLibSettings);
         }
 
         public override void Dispose()
@@ -656,6 +661,43 @@ namespace StatusHud
                     return StatusHudPos.valignBottom;
             }
             return 0;
+        }
+
+
+        private void DrawConfigLibSettings(string id)
+        {
+            if (ImGui.Button($"Save##{id}")) saveConfig();
+
+            foreach ((int elementId, StatusHudElement element) in elements)
+            {
+                DrawElementSettings(elementId, element);
+            }
+        }
+
+        private void DrawElementSettings(int elementId, StatusHudElement element)
+        {
+            StatusHudPosEditor(element.pos, $"hudelement{elementId}");
+        }
+
+        private void StatusHudPosEditor(StatusHudPos value, string id)
+        {
+            ImGui.DragInt($"Horizontal offset##{id}", ref value.x);
+            ImGui.DragInt($"Vertical offset##{id}", ref value.y);
+            AlignEditor(ref value.halign, $"Horizontal align##{id}");
+            AlignEditor(ref value.valign, $"Vertical align##{id}");
+        }
+
+        private static readonly string[] alignTypes = new string[]
+        {
+            "Left",
+            "Center",
+            "Right"
+        };
+        private void AlignEditor(ref int value, string title)
+        {
+            int shiftedValue = value + 1;
+            ImGui.Combo(title, ref shiftedValue, alignTypes, alignTypes.Length);
+            value = shiftedValue - 1;
         }
     }
 }

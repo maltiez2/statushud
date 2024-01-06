@@ -8,26 +8,39 @@
 
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>$(VINTAGE_STORY)//Lib/0Harmony.dll</HintPath>
+      <HintPath>../../Firearms/game_19/Lib/0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="cairo-sharp">
-      <HintPath>F:\Non-Steam Games\Vintagestory/Lib/cairo-sharp.dll</HintPath>
+      <HintPath>../../Firearms/game_19/Lib/cairo-sharp.dll</HintPath>
+		<Private>False</Private>
+    </Reference>
+    <Reference Include="configlib">
+      <HintPath>..\..\Firearms\configlib\Releases\configlib\configlib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ImGui.NET">
+      <HintPath>..\..\Firearms\VSImGui\Releases\vsimgui\ImGui.NET.dll</HintPath>
 		<Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>F:\Non-Steam Games\Vintagestory\Lib\Newtonsoft.Json.dll</HintPath>
+      <HintPath>../../Firearms/game_19/Lib/Newtonsoft.Json.dll</HintPath>
+		<Private>False</Private>
     </Reference>
     <Reference Include="VintagestoryAPI">
-      <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
-      <Private>false</Private>
+      <HintPath>../../Firearms/game_19/VintagestoryAPI.dll</HintPath>
+		<Private>False</Private>
     </Reference>
     <Reference Include="VSEssentials">
-      <HintPath>$(VINTAGE_STORY)/Mods/VSEssentials.dll</HintPath>
+      <HintPath>../../Firearms/game_19/Mods/VSEssentials.dll</HintPath>
+		<Private>False</Private>
+    </Reference>
+    <Reference Include="VSImGui">
+      <HintPath>..\..\Firearms\VSImGui\Releases\vsimgui\VSImGui.dll</HintPath>
 		<Private>False</Private>
     </Reference>
     <Reference Include="VSSurvivalMod">
-      <HintPath>$(VINTAGE_STORY)/Mods/VSSurvivalMod.dll</HintPath>
+      <HintPath>../../Firearms/game_19/Mods/VSSurvivalMod.dll</HintPath>
 		<Private>False</Private>
     </Reference>
   </ItemGroup>
